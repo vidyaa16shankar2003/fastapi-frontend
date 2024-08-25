@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>21BCE1061</title>
+</head>
+<body>
+    <h1>API Frontend</h1>
+    <input type="text" id="jsonInput" placeholder='Enter JSON data'>
+    <button onclick="submitData()">Submit</button>
+    <select id="responseFilter" multiple>
+        <option value="Numbers">Numbers</option>
+        <option value="Alphabets">Alphabets</option>
+        <option value="Highest Lowercase Alphabet">Highest Lowercase Alphabet</option>
+    </select>
+    <div id="responseOutput"></div>
+
+    <script>
+        async function submitData() {
+            const jsonInput = document.getElementById('jsonInput').value;
+            try {
+                const parsedData = JSON.parse(jsonInput);
+                const response = await fetch('https://your-backend-url.herokuapp.com/bfhl', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(parsedData)
+                });
+
+                const result = await response.json();
+                renderResponse(result);
+            } catch (error) {
+                alert('Invalid JSON format or error in API call.');
+            }
+        }
+
+        function renderResponse(data) {
+            const filter = Array.from(document.getElementById('responseFilter').selectedOptions).map(option => option.value);
+            let output = '';
+
+            if (filter.includes('Numbers')) {
+                output += `<p>Numbers: ${data.numbers.join(', ')}</p>`;
+            }
+            if (filter.includes('Alphabets')) {
+                output += `<p>Alphabets: ${data.alphabets.join(', ')}</p>`;
+            }
+            if (filter.includes('Highest Lowercase Alphabet')) {
+                output += `<p>Highest Lowercase Alphabet: ${data.highest_lowercase_alphabet.join(', ')}</p>`;
+            }
+
+            document.getElementById('responseOutput').innerHTML = output;
+        }
+    </script>
+</body>
+</html>
