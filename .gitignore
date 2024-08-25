@@ -1,0 +1,11 @@
+# Ignore system and hidden files
+AppData/
+Desktop.ini
+Thumbs.db
+*.log
+*.cache
+*.pyc
+__pycache__/
+.vscode/
+.idea/
+*.tmp
